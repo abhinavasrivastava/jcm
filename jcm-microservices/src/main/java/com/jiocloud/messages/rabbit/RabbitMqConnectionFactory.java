@@ -31,7 +31,7 @@ public class RabbitMqConnectionFactory {
 //		connection = factory.newConnection(addresses);
 		connection = factory.newConnection();
 	    channel = connection.createChannel();
-        channel.exchangeDeclare("textmessagesexchange", "direct");
+        channel.exchangeDeclare("textmessagesexchange", "direct", true);
         channel.queueBind("textmessages", "textmessagesexchange", "textmessagekey");
 	}
 	
