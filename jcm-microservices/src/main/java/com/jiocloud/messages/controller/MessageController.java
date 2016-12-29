@@ -1,5 +1,6 @@
 package com.jiocloud.messages.controller;
 
+import java.io.IOException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -13,6 +14,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +23,9 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import com.google.gson.Gson;
 import com.jiocloud.messages.model.MessageUploadRequest;
+import com.jiocloud.messages.rabbit.RabbitMqConnectionFactory;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 
 
 @RestController
@@ -30,6 +35,9 @@ public class MessageController {
 	Logger logger = LoggerFactory.getLogger(MessageController.class);
 	Gson gson = new Gson();
 	ResourceBundle rb = ResourceBundle.getBundle("jcm-app");
+	
+	@Autowired
+	RabbitMqConnectionFactory rabbitMqConnectionFactory;
 	
 	private Producer<String, String> producer;
     private String topic;
@@ -53,6 +61,17 @@ public class MessageController {
 //		System.out.println("Message produced, offset: " + m.get().offset());
 //		System.out.println("Message produced, partition : " + m.get().partition());
 //		System.out.println("Message produced, topic: " + m.get().topic());
+		deferredResult.setResult("message queued.");
+		return deferredResult;
+	}
+	
+	
+	@RequestMapping(value="/upload2r", method = RequestMethod.POST)
+	public DeferredResult<String> uploadMesaages2r(@RequestBody MessageUploadRequest req) throws InterruptedException, ExecutionException, IOException{
+		final DeferredResult<String>deferredResult = new DeferredResult<String>();
+		Channel channel = rabbitMqConnectionFactory.getChannel();
+        String message = gson.toJson(req);
+        channel.basicPublish("textmessagesexchange", "", null, message.getBytes());
 		deferredResult.setResult("message queued.");
 		return deferredResult;
 	}
