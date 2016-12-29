@@ -66,14 +66,22 @@ public class MessageController {
 	}
 	
 	
+//	@RequestMapping(value="/upload2r", method = RequestMethod.POST)
+//	public DeferredResult<String> uploadMesaages2r(@RequestBody MessageUploadRequest req) throws InterruptedException, ExecutionException, IOException{
+//		final DeferredResult<String>deferredResult = new DeferredResult<String>();
+//		Channel channel = rabbitMqConnectionFactory.getChannel();
+//        String message = gson.toJson(req);
+//        channel.basicPublish("textmessagesexchange", "", null, message.getBytes());
+//		deferredResult.setResult("message queued.");
+//		return deferredResult;
+//	}
+	
 	@RequestMapping(value="/upload2r", method = RequestMethod.POST)
-	public DeferredResult<String> uploadMesaages2r(@RequestBody MessageUploadRequest req) throws InterruptedException, ExecutionException, IOException{
-		final DeferredResult<String>deferredResult = new DeferredResult<String>();
+	public String uploadMesaages2r(@RequestBody MessageUploadRequest req) throws InterruptedException, ExecutionException, IOException{
 		Channel channel = rabbitMqConnectionFactory.getChannel();
         String message = gson.toJson(req);
         channel.basicPublish("textmessagesexchange", "", null, message.getBytes());
-		deferredResult.setResult("message queued.");
-		return deferredResult;
+		return "message queued.";
 	}
 
 }
