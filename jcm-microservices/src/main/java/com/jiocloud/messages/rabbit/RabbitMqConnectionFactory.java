@@ -25,7 +25,7 @@ public class RabbitMqConnectionFactory {
 	public RabbitMqConnectionFactory() throws IOException, TimeoutException, KeyManagementException, NoSuchAlgorithmException, URISyntaxException{
 		factory = new ConnectionFactory();
 		factory.useNio();
-		factory.setNioParams(new NioParams().setNbIoThreads(4));
+		//factory.setNioParams(new NioParams().setNbIoThreads(4));
 		factory.setUri("amqp://test:test@172.24.1.36");
 		//factory.setHost("localhost");
 		String[] hosts = rb.getString("rabbitmq.servers").split(",");
