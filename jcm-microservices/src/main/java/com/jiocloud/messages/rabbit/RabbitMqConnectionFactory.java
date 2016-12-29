@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.impl.nio.NioParams;
 
 @Component
 public class RabbitMqConnectionFactory {
@@ -23,6 +24,8 @@ public class RabbitMqConnectionFactory {
 	
 	public RabbitMqConnectionFactory() throws IOException, TimeoutException, KeyManagementException, NoSuchAlgorithmException, URISyntaxException{
 		factory = new ConnectionFactory();
+		factory.useNio();
+		factory.setNioParams(new NioParams().setNbIoThreads(4));
 		factory.setUri("amqp://test:test@172.24.1.36");
 		//factory.setHost("localhost");
 		String[] hosts = rb.getString("rabbitmq.servers").split(",");
@@ -42,4 +45,11 @@ public class RabbitMqConnectionFactory {
 	public Channel getChannel(){
 		return channel;
 	}
+	
+//	public Channel getNewChannel() throws IOException{
+//		Channel channel = connection.createChannel();
+//        channel.exchangeDeclare("textmessagesexchange", "direct", true);
+//        channel.queueBind("textmessages", "textmessagesexchange", "textmessagekey");
+//		return channel;
+//	}
 }
