@@ -80,7 +80,7 @@ public class MessageController {
 	public String uploadMesaages2r(@RequestBody MessageUploadRequest req) throws InterruptedException, ExecutionException, IOException{
 		Channel channel = rabbitMqConnectionFactory.getChannel();
         String message = gson.toJson(req);
-        channel.basicPublish("textmessagesexchange", "", null, message.getBytes());
+        channel.basicPublish("textmessagesexchange", "textmessagekey", null, message.getBytes());
 		return "message queued.";
 	}
 
