@@ -27,13 +27,14 @@ public class RabbitMqConnectionFactory {
 		//factory.setNioParams(new NioParams().setNbIoThreads(4));
 		factory.setUri("amqp://test:test@172.24.1.36");
 		//factory.setHost("localhost");
-		String[] hosts = rb.getString("rabbitmq.servers").split(",");
+		//String[] hosts = rb.getString("rabbitmq.servers").split(",");
 //		Address[] addresses = {new Address(hosts[0], 5672), new
 //				Address(hosts[1], 5672)};
 //		connection = factory.newConnection(addresses);
 		connection = factory.newConnection();
 	    channel = connection.createChannel();
         channel.exchangeDeclare("textmessagesexchange", "direct", true);
+        channel.queueDeclare("textmessages", true, false, false, null);
         channel.queueBind("textmessages", "textmessagesexchange", "textmessagekey");
 	}
 	
