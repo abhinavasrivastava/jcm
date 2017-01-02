@@ -24,8 +24,9 @@ import org.springframework.web.context.request.async.DeferredResult;
 import com.google.gson.Gson;
 import com.jiocloud.messages.model.MessageUploadRequest;
 import com.jiocloud.messages.rabbit.RabbitMqConnectionFactory;
+import com.rabbitmq.client.AMQP.BasicProperties;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.MessageProperties;
 
 
 @RestController
@@ -41,6 +42,9 @@ public class MessageController {
 	
 	private Producer<String, String> producer;
     private String topic;
+    BasicProperties rProps;
+    
+    
 	
     @PostConstruct
 	public void initialize() {
@@ -52,6 +56,7 @@ public class MessageController {
 		props.put("acks", "all");
         producer = new KafkaProducer<String,String>(props);
         topic = rb.getString("jcm.message.topic");
+        
   }
 	
 	@RequestMapping(value="/upload", method = RequestMethod.POST)
@@ -80,7 +85,7 @@ public class MessageController {
 	public String uploadMesaages2r(@RequestBody MessageUploadRequest req) throws InterruptedException, ExecutionException, IOException{
 		Channel channel = rabbitMqConnectionFactory.getChannel();
         String message = gson.toJson(req);
-        channel.basicPublish("textmessagesexchange", "textmessagekey", null, message.getBytes());
+        channel.basicPublish("textmessagesexchange", "textmessagekey", MessageProperties.MINIMAL_PERSISTENT_BASIC, message.getBytes());
 		return "message queued.";
 	}
 
