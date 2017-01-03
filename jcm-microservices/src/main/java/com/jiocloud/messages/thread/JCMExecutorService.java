@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class JCMExecutorService {
 
 	//ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-	ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(20);
+	ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
 	
 	public void submit(Callable<String>task){
 		executor.submit(task);
