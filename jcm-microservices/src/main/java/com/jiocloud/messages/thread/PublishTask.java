@@ -17,8 +17,10 @@ public class PublishTask implements Callable<String>{
 
 	@Override
 	public String call() throws Exception {
-		Channel channel = rabbitMqConnectionFactory.getChannel();
-        //channel.basicPublish("textmessagesexchange", "textmessagekey", MessageProperties.MINIMAL_PERSISTENT_BASIC, message.getBytes());
+		//Channel channel = rabbitMqConnectionFactory.getChannel();
+		Channel channel = rabbitMqConnectionFactory.getNewChannel();
+		
+		//channel.basicPublish("textmessagesexchange", "textmessagekey", MessageProperties.MINIMAL_PERSISTENT_BASIC, message.getBytes());
 		channel.basicPublish("textmessagesexchange", "textmessagekey", null, message.getBytes());
 		return null;
 	}

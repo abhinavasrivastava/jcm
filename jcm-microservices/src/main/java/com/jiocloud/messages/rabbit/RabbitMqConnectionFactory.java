@@ -46,10 +46,11 @@ public class RabbitMqConnectionFactory {
 		return channel;
 	}
 	
-//	public Channel getNewChannel() throws IOException{
-//		Channel channel = connection.createChannel();
-//        channel.exchangeDeclare("textmessagesexchange", "direct", true);
-//        channel.queueBind("textmessages", "textmessagesexchange", "textmessagekey");
-//		return channel;
-//	}
+	public Channel getNewChannel() throws IOException{
+		Channel channel = connection.createChannel();
+        channel.exchangeDeclare("textmessagesexchange", "direct", true);
+        channel.queueDeclare("textmessages", true, false, false, null);
+        channel.queueBind("textmessages", "textmessagesexchange", "textmessagekey");
+		return channel;
+	}
 }
