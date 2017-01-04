@@ -88,10 +88,11 @@ public class MessageController {
 	@RequestMapping(value="/upload2r", method = RequestMethod.POST)
 	public String uploadMesaages2r(/* @RequestBody MessageUploadRequest req, */ HttpServletRequest request) throws InterruptedException, ExecutionException, IOException{
 //		Channel channel = rabbitMqConnectionFactory.getChannel();
-		String message = org.apache.commons.io.IOUtils.toString( request.getInputStream());
+		//String message = org.apache.commons.io.IOUtils.toString( request.getInputStream());
+		byte[] bytes = org.apache.commons.io.IOUtils.toByteArray( request.getInputStream());
           //String message = gson.toJson(req);
 //        channel.basicPublish("textmessagesexchange", "textmessagekey", MessageProperties.MINIMAL_PERSISTENT_BASIC, message.getBytes());
-          jCMExecutorService.submit(new PublishTask(rabbitMqConnectionFactory, message));
+          jCMExecutorService.submit(new PublishTask(rabbitMqConnectionFactory, bytes));
 		return "message queued.";
 		//return message;
 	}
