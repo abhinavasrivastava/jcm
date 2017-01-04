@@ -90,7 +90,7 @@ public class MessageController {
 //		Channel channel = rabbitMqConnectionFactory.getChannel();
 		//String message = org.apache.commons.io.IOUtils.toString( request.getInputStream());
 		//byte[] bytes = org.apache.commons.io.IOUtils.toByteArray( request.getInputStream());
-		byte[] bytes = getbyteArray(request.getInputStream());
+		//byte[] bytes = getbyteArray(request.getInputStream());
           //String message = gson.toJson(req);
 //        channel.basicPublish("textmessagesexchange", "textmessagekey", MessageProperties.MINIMAL_PERSISTENT_BASIC, message.getBytes());
           //jCMExecutorService.submit(new PublishTask(rabbitMqConnectionFactory, bytes));
