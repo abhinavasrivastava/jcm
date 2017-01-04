@@ -91,8 +91,8 @@ public class MessageController {
           //String message = gson.toJson(req);
 //        channel.basicPublish("textmessagesexchange", "textmessagekey", MessageProperties.MINIMAL_PERSISTENT_BASIC, message.getBytes());
           //jCMExecutorService.submit(new PublishTask(rabbitMqConnectionFactory, message));
-		//return "message queued.";
-		return message;
+		return "message queued.";
+		//return message;
 	}
 
 }
