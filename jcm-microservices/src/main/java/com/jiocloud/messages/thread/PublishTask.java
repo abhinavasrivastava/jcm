@@ -8,23 +8,21 @@ import com.rabbitmq.client.Channel;
 public class PublishTask implements Callable<String>{
 	
 	RabbitMqConnectionFactory rabbitMqConnectionFactory;
-	//String message;
-	byte[] bytes;
+	String message;
 	
-	public PublishTask(RabbitMqConnectionFactory rabbitMqConnectionFactory, byte[] bytes){
+	public PublishTask(RabbitMqConnectionFactory rabbitMqConnectionFactory, String message){
 		this.rabbitMqConnectionFactory = rabbitMqConnectionFactory;
-		//this.message = message;
-		this.bytes = bytes;
+		this.message = message;
 	}
 
 	@Override
 	public String call() throws Exception {
 		Channel channel = rabbitMqConnectionFactory.getChannel();
-		//Channel channel = rabbitMqConnectionFactory.getNewChannel();
-		
 		//channel.basicPublish("textmessagesexchange", "textmessagekey", MessageProperties.MINIMAL_PERSISTENT_BASIC, message.getBytes());
-		channel.basicPublish("textmessagesexchange", "textmessagekey", null, bytes);
+		channel.basicPublish("textmessagesexchange", "textmessagekey", null, message.getBytes());
 		return null;
 	}
 
 }
+
+

@@ -1,6 +1,7 @@
 package com.jiocloud.messages.controller;
 
-import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -26,7 +27,6 @@ import com.google.gson.Gson;
 import com.jiocloud.messages.model.MessageUploadRequest;
 import com.jiocloud.messages.rabbit.RabbitMqConnectionFactory;
 import com.jiocloud.messages.thread.JCMExecutorService;
-import com.jiocloud.messages.thread.PublishTask;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
 
@@ -86,15 +86,24 @@ public class MessageController {
 //	}
 	
 	@RequestMapping(value="/upload2r", method = RequestMethod.POST)
-	public String uploadMesaages2r(/* @RequestBody MessageUploadRequest req, */ HttpServletRequest request) throws InterruptedException, ExecutionException, IOException{
+	public String uploadMesaages2r(/* @RequestBody MessageUploadRequest req, */ HttpServletRequest request) throws Exception{
 //		Channel channel = rabbitMqConnectionFactory.getChannel();
 		//String message = org.apache.commons.io.IOUtils.toString( request.getInputStream());
-		byte[] bytes = org.apache.commons.io.IOUtils.toByteArray( request.getInputStream());
+		//byte[] bytes = org.apache.commons.io.IOUtils.toByteArray( request.getInputStream());
+		byte[] bytes = getbyteArray(request.getInputStream());
           //String message = gson.toJson(req);
 //        channel.basicPublish("textmessagesexchange", "textmessagekey", MessageProperties.MINIMAL_PERSISTENT_BASIC, message.getBytes());
           //jCMExecutorService.submit(new PublishTask(rabbitMqConnectionFactory, bytes));
 		return "message queued.";
-		//return message;
+	}
+	
+	byte[] getbyteArray(InputStream inputStream) throws Exception{
+		// Read the file contents into a byte[] array
+		final byte[] contents = new byte[1024];
+		final int bytesRead = Math.max(0, inputStream.read(contents));
+		// For safety, truncate the array if the file was truncated before we finish reading it
+		final byte[] contentsRead = bytesRead == 1024 ? contents : Arrays.copyOf(contents, bytesRead);
+		return contentsRead;
 	}
 
 }
