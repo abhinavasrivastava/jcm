@@ -19,7 +19,7 @@ public class CassandraConnectionFactory {
 	@PostConstruct
 	public void initialize(){
 		cassandraConnector = new CassandraConnector();
-		cassandraConnector.connect(rb.getString("cassandra.node"), 9042);
+		cassandraConnector.connect(rb.getString("cassandra.node"), 9042, rb.getString("cassandra.keyspace"));
 		session = cassandraConnector.getSession();
 	}
 	

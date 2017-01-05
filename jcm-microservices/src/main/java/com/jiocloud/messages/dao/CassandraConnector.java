@@ -22,7 +22,7 @@ public class CassandraConnector
     * @param node Cluster node IP address.
     * @param port Port of cluster host.
     */
-   public void connect(final String node, final int port)
+   public void connect(final String node, final int port, final String keyspace)
    {
       this.cluster = Cluster.builder().addContactPoint(node).withPort(port).build();
       final Metadata metadata = cluster.getMetadata();
@@ -32,7 +32,7 @@ public class CassandraConnector
          out.printf("Datacenter: %s; Host: %s; Rack: %s\n",
             host.getDatacenter(), host.getAddress(), host.getRack());
       }
-      session = cluster.connect("tej_jcm");
+      session = cluster.connect(keyspace);
    }
    /**
     * Provide my Session.
