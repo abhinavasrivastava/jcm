@@ -6,7 +6,8 @@ public class Message {
 	private String address;
 	private String _id;
 	private String body;
-	private Date date;
+	//private Date date;
+	private String date;
 	private int type;
 	
 	public String getAddress() {
@@ -27,10 +28,10 @@ public class Message {
 	public void setBody(String body) {
 		this.body = body;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	public int getType() {
