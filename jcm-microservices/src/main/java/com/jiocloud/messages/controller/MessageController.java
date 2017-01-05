@@ -103,7 +103,7 @@ public class MessageController {
 	
 	@RequestMapping(value="/upload2c", method = RequestMethod.POST)
 	public String uploadMesaages2c(@RequestBody MessageUploadRequest req) throws Exception{
-		//messageUploadServiceImpl.saveMessages(req);
+		messageUploadServiceImpl.saveMessages(req);
 		return "message queued.";
 	}
 	
