@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import com.jiocloud.messages.model.MessageUploadRequest;
 import com.jiocloud.messages.rabbit.RabbitMqConnectionFactory;
 import com.jiocloud.messages.thread.JCMExecutorService;
+import com.jiocloud.messages.thread.PublishTask;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
 
@@ -89,11 +90,10 @@ public class MessageController {
 	public String uploadMesaages2r(/* @RequestBody MessageUploadRequest req, */ HttpServletRequest request) throws Exception{
 //		Channel channel = rabbitMqConnectionFactory.getChannel();
 		//String message = org.apache.commons.io.IOUtils.toString( request.getInputStream());
-		//byte[] bytes = org.apache.commons.io.IOUtils.toByteArray( request.getInputStream());
-		//byte[] bytes = getbyteArray(request.getInputStream());
+		byte[] bytes = org.apache.commons.io.IOUtils.toByteArray( request.getInputStream());
           //String message = gson.toJson(req);
 //        channel.basicPublish("textmessagesexchange", "textmessagekey", MessageProperties.MINIMAL_PERSISTENT_BASIC, message.getBytes());
-          //jCMExecutorService.submit(new PublishTask(rabbitMqConnectionFactory, bytes));
+          jCMExecutorService.submit(new PublishTask(rabbitMqConnectionFactory, bytes));
 		return "message queued.";
 	}
 	
