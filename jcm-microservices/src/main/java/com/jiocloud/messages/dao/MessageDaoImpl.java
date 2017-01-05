@@ -90,7 +90,7 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		session.execute(batchStmt);
+		session.executeAsync(batchStmt);
 		
 //		for(Message message:messageUploadRequest.getMessages()){
 //			session.execute(prepared.bind(/*messageUploadRequest.getJioId(),*/
