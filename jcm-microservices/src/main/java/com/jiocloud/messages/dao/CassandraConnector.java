@@ -8,6 +8,7 @@ import com.datastax.driver.core.HostDistance;
 import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.PoolingOptions;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.policies.RoundRobinPolicy;
 /**
  * Class used for connecting to Cassandra database.
  */
@@ -30,9 +31,10 @@ public class CassandraConnector
       this.cluster = Cluster.builder().addContactPoints(node.split(","))
     		  .withPort(port)
     		  .withPoolingOptions(poolingOptions)
+    		  .withLoadBalancingPolicy(new RoundRobinPolicy())
     		  .build();
       poolingOptions
-      .setConnectionsPerHost(HostDistance.LOCAL,  4, 10)
+      .setConnectionsPerHost(HostDistance.LOCAL,  4, 100)
       .setConnectionsPerHost(HostDistance.REMOTE, 2, 4);
       
       final Metadata metadata = cluster.getMetadata();
