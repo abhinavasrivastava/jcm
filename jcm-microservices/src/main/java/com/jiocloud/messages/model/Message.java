@@ -7,7 +7,7 @@ public class Message {
 	private String _id;
 	private String body;
 	private Date date;
-	private String type;
+	private int type;
 	
 	public String getAddress() {
 		return address;
@@ -33,10 +33,10 @@ public class Message {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public String getType() {
+	public int getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 	
