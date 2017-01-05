@@ -91,7 +91,7 @@ public class MessageDaoImpl {
 					));
 		}
 		//session.executeAsync(batchStmt);
-		session.executeAsync(batchStmt);
+		session.execute(batchStmt);
 		
 //		for(Message message:messageUploadRequest.getMessages()){
 //			session.execute(prepared.bind(/*messageUploadRequest.getJioId(),*/
