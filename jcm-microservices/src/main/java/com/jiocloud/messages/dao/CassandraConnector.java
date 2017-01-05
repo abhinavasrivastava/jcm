@@ -34,7 +34,7 @@ public class CassandraConnector
     		  .withLoadBalancingPolicy(new RoundRobinPolicy())
     		  .build();
       poolingOptions
-      .setConnectionsPerHost(HostDistance.LOCAL,  4, 100)
+      .setConnectionsPerHost(HostDistance.LOCAL,  4, 10)
       .setConnectionsPerHost(HostDistance.REMOTE, 2, 4);
       
       final Metadata metadata = cluster.getMetadata();
