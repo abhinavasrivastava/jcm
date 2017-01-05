@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.datastax.driver.core.BatchStatement;
+import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.Session;
-import com.datastax.driver.core.SimpleStatement;
 import com.datastax.driver.core.utils.UUIDs;
 import com.jiocloud.messages.model.Message;
 import com.jiocloud.messages.model.MessageUploadRequest;
@@ -78,9 +78,10 @@ public class MessageDaoImpl {
 				+ "msgtype) "
 				+ "values(?,?,?,?,?,?,?)";
 		PreparedStatement prepared = session.prepare(sql);
+		BoundStatement boundStatement = new BoundStatement(prepared);
 		BatchStatement batchStmt = new BatchStatement();
 		for(Message message:messageUploadRequest.getMessages()){
-			batchStmt.add(prepared.bind(/*messageUploadRequest.getJioId(),*/
+			batchStmt.add(boundStatement.bind(/*messageUploadRequest.getJioId(),*/
 					"123",
 					UUIDs.random(),
 					message.getAddress(),
@@ -90,8 +91,8 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		//session.executeAsync(batchStmt);
-		session.execute(batchStmt);
+		session.executeAsync(batchStmt);
+		//session.execute(batchStmt);
 		
 //		for(Message message:messageUploadRequest.getMessages()){
 //			session.execute(prepared.bind(/*messageUploadRequest.getJioId(),*/
