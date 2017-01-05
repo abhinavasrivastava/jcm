@@ -4,7 +4,9 @@ import static java.lang.System.out;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Host;
+import com.datastax.driver.core.HostDistance;
 import com.datastax.driver.core.Metadata;
+import com.datastax.driver.core.PoolingOptions;
 import com.datastax.driver.core.Session;
 /**
  * Class used for connecting to Cassandra database.
@@ -24,7 +26,15 @@ public class CassandraConnector
     */
    public void connect(final String node, final int port, final String keyspace)
    {
-      this.cluster = Cluster.builder().addContactPoints(node.split(",")).withPort(port).build();
+	   PoolingOptions poolingOptions = new PoolingOptions();
+      this.cluster = Cluster.builder().addContactPoints(node.split(","))
+    		  .withPort(port)
+    		  .withPoolingOptions(poolingOptions)
+    		  .build();
+      poolingOptions
+      .setConnectionsPerHost(HostDistance.LOCAL,  4, 10)
+      .setConnectionsPerHost(HostDistance.REMOTE, 2, 4);
+      
       final Metadata metadata = cluster.getMetadata();
       out.printf("Connected to cluster: %s\n", metadata.getClusterName());
       for (final Host host : metadata.getAllHosts())
