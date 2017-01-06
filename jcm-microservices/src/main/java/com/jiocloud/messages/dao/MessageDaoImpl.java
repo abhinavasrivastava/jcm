@@ -123,6 +123,7 @@ public class MessageDaoImpl {
 					));
 		}
 		ResultSetFuture f = session.executeAsync(batchStmt);
+		return;
 	}
 
 }
