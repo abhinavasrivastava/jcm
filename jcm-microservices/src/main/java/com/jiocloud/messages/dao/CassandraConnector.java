@@ -40,8 +40,8 @@ public class CassandraConnector
       this.cluster = Cluster.builder().addContactPoints(node.split(","))
     		  .withPort(port)
     		  //.withProtocolVersion(ProtocolVersion.V3)
-    		  .withPoolingOptions(poolingOptions)
-    		  .withLoadBalancingPolicy(new RoundRobinPolicy())
+    		  //.withPoolingOptions(poolingOptions)
+    		  //.withLoadBalancingPolicy(new RoundRobinPolicy())
     		  .build();
       
       
