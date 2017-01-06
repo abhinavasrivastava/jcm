@@ -22,6 +22,7 @@ public class MessageDaoImpl {
 	String sql;
 	Session session;
 	PreparedStatement prepared;
+	BoundStatement boundStatement;
 	
 	@PostConstruct
 	public void initialize(){
@@ -35,6 +36,7 @@ public class MessageDaoImpl {
 			+ "msgtype) "
 			+ "values(?,?,?,?,?,?,?)";
        prepared = session.prepare(sql);
+       boundStatement = new BoundStatement(prepared);
 	}
 
 //	public void saveMessages2L(MessageUploadRequest messageUploadRequest){
@@ -73,7 +75,7 @@ public class MessageDaoImpl {
 
 	public void saveMessages2R(MessageUploadRequest messageUploadRequest){
 		
-		BoundStatement boundStatement = new BoundStatement(prepared);
+		
 		BatchStatement batchStmt = new BatchStatement();
 		for(Message message:messageUploadRequest.getMessages()){
 			batchStmt.add(boundStatement.bind(/*messageUploadRequest.getJioId(),*/
