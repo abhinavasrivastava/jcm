@@ -122,7 +122,7 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		ResultSetFuture f = session.executeAsync(batchStmt);
+		//ResultSetFuture f = session.executeAsync(batchStmt);
 		return;
 	}
 
