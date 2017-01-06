@@ -28,7 +28,7 @@ public class MessageDaoImpl {
 
 	@PostConstruct
 	public void initialize(){
-		Session session = cassandraConnectionFactory.getSession();
+	    session = cassandraConnectionFactory.getSession();
 		String sql = "insert into textmessages (userid,"
 				+ "id,"
 				+ "address,"
