@@ -21,17 +21,17 @@ public class RabbitMqConnectionFactory {
 	Channel channel;
 	ResourceBundle rb = ResourceBundle.getBundle("jcm-app");
 	
-//	public RabbitMqConnectionFactory() throws IOException, TimeoutException, KeyManagementException, NoSuchAlgorithmException, URISyntaxException{
-//		factory = new ConnectionFactory();
-//		//factory.useNio();
-//		//factory.setNioParams(new NioParams().setNbIoThreads(4));
-//		factory.setUri("amqp://test:test@172.24.1.36");
-//		connection = factory.newConnection();
-//	    channel = connection.createChannel();
-//        channel.exchangeDeclare("textmessagesexchange", "direct", true);
-//        channel.queueDeclare("textmessages", true, false, false, null);
-//        channel.queueBind("textmessages", "textmessagesexchange", "textmessagekey");
-//	}
+	public RabbitMqConnectionFactory() throws IOException, TimeoutException, KeyManagementException, NoSuchAlgorithmException, URISyntaxException{
+		factory = new ConnectionFactory();
+		//factory.useNio();
+		//factory.setNioParams(new NioParams().setNbIoThreads(4));
+		factory.setUri("amqp://test:test@172.24.1.36");
+		connection = factory.newConnection();
+	    channel = connection.createChannel();
+        channel.exchangeDeclare("textmessagesexchange", "direct", true);
+        channel.queueDeclare("textmessages", true, false, false, null);
+        channel.queueBind("textmessages", "textmessagesexchange", "textmessagekey");
+	}
 	
 	public Connection getConnection(){
 		return connection;
