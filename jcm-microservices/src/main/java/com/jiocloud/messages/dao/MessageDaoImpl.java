@@ -1,5 +1,7 @@
 package com.jiocloud.messages.dao;
 
+import java.util.Date;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,59 +25,73 @@ public class MessageDaoImpl {
 	Session session;
 	PreparedStatement prepared;
 	BoundStatement boundStatement;
-	
+
 	@PostConstruct
 	public void initialize(){
 		Session session = cassandraConnectionFactory.getSession();
 		String sql = "insert into textmessages (userid,"
-			+ "id,"
-			+ "address,"
-			+ "msgbody,"
-			+ "msgdate,"
-			+ "msgid,"
-			+ "msgtype) "
-			+ "values(?,?,?,?,?,?,?)";
-       prepared = session.prepare(sql);
-       boundStatement = new BoundStatement(prepared);
+				+ "id,"
+				+ "address,"
+				+ "msgbody,"
+				+ "msgdate,"
+				+ "msgid,"
+				+ "msgtype) "
+				+ "values(?,?,?,?,?,?,?)";
+		prepared = session.prepare(sql);
+		boundStatement = new BoundStatement(prepared);
 	}
 
-//	public void saveMessages2L(MessageUploadRequest messageUploadRequest){
-//		BatchStatement batchStmt = new BatchStatement();		
-//		for(Message message:messageUploadRequest.getMessages()){
-//			batchStmt.add(prepared.bind(/*messageUploadRequest.getJioId(),*/
-//					"changeme",
-//					UUIDs.random(),
-//					message.getAddress(),
-//					message.getBody(),
-//					new Date(),
-//					message.get_id(),
-//					message.getType(),
-//					"very-bad-hash",
-//					new Date()
-//					));
-//		}
-//		session.execute(batchStmt);
-//
-//
-//
-////				for(Message message:messageUploadRequest.getMessages()){
-////					session.execute(prepared.bind(/*messageUploadRequest.getJioId(),*/
-////							"changeme",
-////							UUIDs.random(),
-////							message.getAddress(),
-////							message.getBody(),
-////							message.getDate(),
-////							message.get_id(),
-////							message.getType(),
-////							"very-bad-hash",
-////							new Date()
-////							));
-////				}
-//	}
+
+
+	public void saveMessages2L(MessageUploadRequest messageUploadRequest){
+		Session session = cassandraConnectionFactory.getSession();
+		String sql = "insert into textmessages (userid,"
+				+ "id,"
+				+ "address,"
+				+ "msgbody,"
+				+ "msgdate,"
+				+ "msgid,"
+				+ "msgtype,"
+				+ "hash,"
+				+ "last_updated_tx_stamp) "
+				+ "values(?,?,?,?,?,?,?,?,?)";
+		PreparedStatement prepared = session.prepare(sql);
+		BatchStatement batchStmt = new BatchStatement();		
+		for(Message message:messageUploadRequest.getMessages()){
+			batchStmt.add(prepared.bind(/*messageUploadRequest.getJioId(),*/
+					"changeme",
+					UUIDs.random(),
+					message.getAddress(),
+					message.getBody(),
+					new Date(),
+					message.get_id(),
+					message.getType(),
+					"very-bad-hash",
+					new Date()
+					));
+		}
+		session.execute(batchStmt);
+
+
+
+		//				for(Message message:messageUploadRequest.getMessages()){
+		//					session.execute(prepared.bind(/*messageUploadRequest.getJioId(),*/
+		//							"changeme",
+		//							UUIDs.random(),
+		//							message.getAddress(),
+		//							message.getBody(),
+		//							message.getDate(),
+		//							message.get_id(),
+		//							message.getType(),
+		//							"very-bad-hash",
+		//							new Date()
+		//							));
+		//				}
+	}
 
 	public void saveMessages2R(MessageUploadRequest messageUploadRequest){
-		
-		
+
+
 		BatchStatement batchStmt = new BatchStatement();
 		for(Message message:messageUploadRequest.getMessages()){
 			batchStmt.add(boundStatement.bind(/*messageUploadRequest.getJioId(),*/
@@ -89,19 +105,21 @@ public class MessageDaoImpl {
 					));
 		}
 		//session.executeAsync(batchStmt);
+		System.out.println(session == null);
+		System.out.println(batchStmt == null);
 		session.execute(batchStmt);
-		
-//		for(Message message:messageUploadRequest.getMessages()){
-//			session.execute(prepared.bind(/*messageUploadRequest.getJioId(),*/
-//					"123",
-//					UUIDs.random(),
-//					message.getAddress(),
-//					message.getBody(),
-//					message.getDate(),
-//					message.get_id(),
-//					message.getType()
-//					));
-//		}
+
+		//		for(Message message:messageUploadRequest.getMessages()){
+		//			session.execute(prepared.bind(/*messageUploadRequest.getJioId(),*/
+		//					"123",
+		//					UUIDs.random(),
+		//					message.getAddress(),
+		//					message.getBody(),
+		//					message.getDate(),
+		//					message.get_id(),
+		//					message.getType()
+		//					));
+		//		}
 	}
 
 }
