@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import com.datastax.driver.core.BatchStatement;
@@ -91,7 +90,6 @@ public class MessageDaoImpl {
 		//				}
 	}
 
-	@Async
 	public void saveMessages2R(MessageUploadRequest messageUploadRequest){
 		BatchStatement batchStmt = new BatchStatement();
 		for(Message message:messageUploadRequest.getMessages()){

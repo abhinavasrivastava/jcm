@@ -24,11 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import com.google.gson.Gson;
+import com.jiocloud.messages.dao.MessageDaoImpl;
 import com.jiocloud.messages.model.MessageUploadRequest;
 import com.jiocloud.messages.rabbit.RabbitMqConnectionFactory;
 import com.jiocloud.messages.service.MessageUploadServiceImpl;
 import com.jiocloud.messages.thread.JCMExecutorService;
 import com.jiocloud.messages.thread.PublishTask;
+import com.jiocloud.messages.thread.SaveMessageTask;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
 
@@ -48,6 +50,9 @@ public class MessageController {
 	
 	@Autowired
 	MessageUploadServiceImpl messageUploadServiceImpl;
+	
+	@Autowired
+	MessageDaoImpl messageDaoImpl;
 	
 	private Producer<String, String> producer;
     private String topic;
@@ -103,7 +108,8 @@ public class MessageController {
 	
 	@RequestMapping(value="/upload2c", method = RequestMethod.POST)
 	public String uploadMesaages2c(@RequestBody MessageUploadRequest req) throws Exception{
-		messageUploadServiceImpl.saveMessages(req);
+		//messageUploadServiceImpl.saveMessages(req);
+		jCMExecutorService.submit(new SaveMessageTask(messageDaoImpl, req));
 		return "message queued.";
 	}
 	
