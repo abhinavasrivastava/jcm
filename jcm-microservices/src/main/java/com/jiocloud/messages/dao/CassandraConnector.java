@@ -35,7 +35,7 @@ public class CassandraConnector
 	   poolingOptions
 	     // .setConnectionsPerHost(HostDistance.LOCAL,  4, 10)
 	      //.setConnectionsPerHost(HostDistance.REMOTE, 2, 4);
-	   .setCoreConnectionsPerHost(HostDistance.LOCAL,  2)
+	   .setCoreConnectionsPerHost(HostDistance.LOCAL,  1)
 	   .setCoreConnectionsPerHost(HostDistance.REMOTE,  1)
 	      .setMaxRequestsPerConnection(HostDistance.LOCAL, 32768)
 	      .setMaxRequestsPerConnection(HostDistance.REMOTE, 2000);

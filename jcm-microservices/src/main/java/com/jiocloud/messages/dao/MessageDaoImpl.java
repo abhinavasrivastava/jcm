@@ -105,8 +105,8 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		ResultSetFuture f = session.executeAsync(batchStmt);
-		//session.execute(batchStmt);
+		//ResultSetFuture f = session.executeAsync(batchStmt);
+		session.execute(batchStmt);
 	}
 
 }
