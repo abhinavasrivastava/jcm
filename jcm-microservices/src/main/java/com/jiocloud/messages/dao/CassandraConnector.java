@@ -39,7 +39,7 @@ public class CassandraConnector
 	     // .setMaxRequestsPerConnection(HostDistance.REMOTE, 2000);;
       this.cluster = Cluster.builder().addContactPoints(node.split(","))
     		  .withPort(port)
-    		  .withProtocolVersion(ProtocolVersion.V3)
+    		  //.withProtocolVersion(ProtocolVersion.V3)
     		  .withPoolingOptions(poolingOptions)
     		  .withLoadBalancingPolicy(new RoundRobinPolicy())
     		  .build();
