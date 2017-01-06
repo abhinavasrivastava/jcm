@@ -1,14 +1,12 @@
 package com.jiocloud.messages.model;
 
-import java.util.Date;
-
 public class Message {
 	private String address;
 	private String _id;
 	private String body;
 	//private Date date;
 	private String date;
-	private int type;
+	private String type;
 	
 	public String getAddress() {
 		return address;
@@ -34,10 +32,10 @@ public class Message {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public int getType() {
+	public String getType() {
 		return type;
 	}
-	public void setType(int type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	
