@@ -1,5 +1,7 @@
 package com.jiocloud.messages.dao;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +22,9 @@ public class MessageDaoImpl {
 	String sql;
 	Session session;
 	PreparedStatement prepared;
-	public MessageDaoImpl(){
+	
+	@PostConstruct
+	public void initialize(){
 		Session session = cassandraConnectionFactory.getSession();
 		String sql = "insert into textmessages (userid,"
 			+ "id,"
