@@ -108,18 +108,11 @@ public class MessageController {
 	
 	@RequestMapping(value="/upload2c", method = RequestMethod.POST)
 	public String uploadMesaages2c(@RequestBody MessageUploadRequest req) throws Exception{
-		messageUploadServiceImpl.saveMessages(req);
+		//messageUploadServiceImpl.saveMessages(req);
 		//jCMExecutorService.submit(new SaveMessageTask(messageDaoImpl, req));
 		return "message queued.";
 	}
 	
-	byte[] getbyteArray(InputStream inputStream) throws Exception{
-		// Read the file contents into a byte[] array
-		final byte[] contents = new byte[1024];
-		final int bytesRead = Math.max(0, inputStream.read(contents));
-		// For safety, truncate the array if the file was truncated before we finish reading it
-		final byte[] contentsRead = bytesRead == 1024 ? contents : Arrays.copyOf(contents, bytesRead);
-		return contentsRead;
-	}
+	
 
 }

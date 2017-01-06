@@ -28,19 +28,19 @@ public class MessageDaoImpl {
 	BoundStatement boundStatement;
 	
 	@PostConstruct
-	public void initialize(){
-	    session = cassandraConnectionFactory.getSession();
-		String sql = "insert into textmessages (userid,"
-				+ "id,"
-				+ "address,"
-				+ "msgbody,"
-				+ "msgdate,"
-				+ "msgid,"
-				+ "msgtype) "
-				+ "values(?,?,?,?,?,?,?)";
-		prepared = session.prepare(sql);
-		boundStatement = new BoundStatement(prepared);
-		
+    public void initialize(){
+//	    session = cassandraConnectionFactory.getSession();
+//		String sql = "insert into textmessages (userid,"
+//				+ "id,"
+//				+ "address,"
+//				+ "msgbody,"
+//				+ "msgdate,"
+//				+ "msgid,"
+//				+ "msgtype) "
+//				+ "values(?,?,?,?,?,?,?)";
+//		prepared = session.prepare(sql);
+//		boundStatement = new BoundStatement(prepared);
+//		
 	}
 
 
