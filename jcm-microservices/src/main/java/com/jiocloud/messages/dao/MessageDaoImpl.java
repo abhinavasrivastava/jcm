@@ -104,16 +104,15 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		ResultSetFuture f = session.executeAsync(batchStmt);
 		
-		//session.execute(batchStmt);
+		session.execute(batchStmt);
 	}
 	
 	
 	public void saveAsyncMessages2R(MessageUploadRequest messageUploadRequest){
 		BatchStatement batchStmt = new BatchStatement();
 		for(Message message:messageUploadRequest.getMessages()){
-			session.executeAsync(boundStatement.bind(/*messageUploadRequest.getJioId(),*/
+			batchStmt.add(boundStatement.bind(/*messageUploadRequest.getJioId(),*/
 					"123",
 					UUIDs.random(),
 					message.getAddress(),
@@ -123,7 +122,7 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		//session.execute(batchStmt);
+		ResultSetFuture f = session.executeAsync(batchStmt);
 	}
 
 }
