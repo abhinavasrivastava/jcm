@@ -105,21 +105,7 @@ public class MessageDaoImpl {
 					));
 		}
 		//session.executeAsync(batchStmt);
-		System.out.println(session == null);
-		System.out.println(batchStmt == null);
 		session.execute(batchStmt);
-
-		//		for(Message message:messageUploadRequest.getMessages()){
-		//			session.execute(prepared.bind(/*messageUploadRequest.getJioId(),*/
-		//					"123",
-		//					UUIDs.random(),
-		//					message.getAddress(),
-		//					message.getBody(),
-		//					message.getDate(),
-		//					message.get_id(),
-		//					message.getType()
-		//					));
-		//		}
 	}
 
 }
