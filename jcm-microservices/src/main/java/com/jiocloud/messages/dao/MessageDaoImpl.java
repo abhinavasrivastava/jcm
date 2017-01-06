@@ -1,7 +1,5 @@
 package com.jiocloud.messages.dao;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,65 +17,58 @@ public class MessageDaoImpl {
 
 	@Autowired
 	CassandraConnectionFactory cassandraConnectionFactory;
-
-	public void saveMessages2L(MessageUploadRequest messageUploadRequest){
+	String sql;
+	Session session;
+	PreparedStatement prepared;
+	public MessageDaoImpl(){
 		Session session = cassandraConnectionFactory.getSession();
 		String sql = "insert into textmessages (userid,"
-				+ "id,"
-				+ "address,"
-				+ "msgbody,"
-				+ "msgdate,"
-				+ "msgid,"
-				+ "msgtype,"
-				+ "hash,"
-				+ "last_updated_tx_stamp) "
-				+ "values(?,?,?,?,?,?,?,?,?)";
-		PreparedStatement prepared = session.prepare(sql);
-
-		BatchStatement batchStmt = new BatchStatement();		
-		for(Message message:messageUploadRequest.getMessages()){
-			batchStmt.add(prepared.bind(/*messageUploadRequest.getJioId(),*/
-					"changeme",
-					UUIDs.random(),
-					message.getAddress(),
-					message.getBody(),
-					new Date(),
-					message.get_id(),
-					message.getType(),
-					"very-bad-hash",
-					new Date()
-					));
-		}
-		session.execute(batchStmt);
-
-
-
-//				for(Message message:messageUploadRequest.getMessages()){
-//					session.execute(prepared.bind(/*messageUploadRequest.getJioId(),*/
-//							"changeme",
-//							UUIDs.random(),
-//							message.getAddress(),
-//							message.getBody(),
-//							message.getDate(),
-//							message.get_id(),
-//							message.getType(),
-//							"very-bad-hash",
-//							new Date()
-//							));
-//				}
+			+ "id,"
+			+ "address,"
+			+ "msgbody,"
+			+ "msgdate,"
+			+ "msgid,"
+			+ "msgtype) "
+			+ "values(?,?,?,?,?,?,?)";
+       prepared = session.prepare(sql);
 	}
 
+//	public void saveMessages2L(MessageUploadRequest messageUploadRequest){
+//		BatchStatement batchStmt = new BatchStatement();		
+//		for(Message message:messageUploadRequest.getMessages()){
+//			batchStmt.add(prepared.bind(/*messageUploadRequest.getJioId(),*/
+//					"changeme",
+//					UUIDs.random(),
+//					message.getAddress(),
+//					message.getBody(),
+//					new Date(),
+//					message.get_id(),
+//					message.getType(),
+//					"very-bad-hash",
+//					new Date()
+//					));
+//		}
+//		session.execute(batchStmt);
+//
+//
+//
+////				for(Message message:messageUploadRequest.getMessages()){
+////					session.execute(prepared.bind(/*messageUploadRequest.getJioId(),*/
+////							"changeme",
+////							UUIDs.random(),
+////							message.getAddress(),
+////							message.getBody(),
+////							message.getDate(),
+////							message.get_id(),
+////							message.getType(),
+////							"very-bad-hash",
+////							new Date()
+////							));
+////				}
+//	}
+
 	public void saveMessages2R(MessageUploadRequest messageUploadRequest){
-		Session session = cassandraConnectionFactory.getSession();
-		String sql = "insert into textmessages (userid,"
-				+ "id,"
-				+ "address,"
-				+ "msgbody,"
-				+ "msgdate,"
-				+ "msgid,"
-				+ "msgtype) "
-				+ "values(?,?,?,?,?,?,?)";
-		PreparedStatement prepared = session.prepare(sql);
+		
 		BoundStatement boundStatement = new BoundStatement(prepared);
 		BatchStatement batchStmt = new BatchStatement();
 		for(Message message:messageUploadRequest.getMessages()){
