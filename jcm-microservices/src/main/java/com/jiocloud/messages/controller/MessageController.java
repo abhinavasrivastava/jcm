@@ -110,7 +110,7 @@ public class MessageController {
 	public String uploadMesaages2c(@RequestBody MessageUploadRequest req) throws Exception{
 		//messageUploadServiceImpl.saveMessages(req);
 		//jCMExecutorService.submit(new SaveMessageTask(messageDaoImpl, req));
-		return "message queued.";
+		return req.getMessages().get(0).getDate();
 	}
 	
 	
