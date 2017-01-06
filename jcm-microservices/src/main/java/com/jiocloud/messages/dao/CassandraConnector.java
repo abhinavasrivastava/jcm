@@ -7,6 +7,7 @@ import com.datastax.driver.core.Host;
 import com.datastax.driver.core.HostDistance;
 import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.PoolingOptions;
+import com.datastax.driver.core.ProtocolVersion;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.policies.RoundRobinPolicy;
 /**
@@ -27,15 +28,23 @@ public class CassandraConnector
     */
    public void connect(final String node, final int port, final String keyspace)
    {
+	   
+	   
+
 	   PoolingOptions poolingOptions = new PoolingOptions();
+	   poolingOptions
+	      .setConnectionsPerHost(HostDistance.LOCAL,  4, 10)
+	      .setConnectionsPerHost(HostDistance.REMOTE, 2, 4)
+	      .setMaxRequestsPerConnection(HostDistance.LOCAL, 32768)
+	      .setMaxRequestsPerConnection(HostDistance.REMOTE, 2000);;
       this.cluster = Cluster.builder().addContactPoints(node.split(","))
     		  .withPort(port)
+    		  .withProtocolVersion(ProtocolVersion.V3)
     		  .withPoolingOptions(poolingOptions)
     		  .withLoadBalancingPolicy(new RoundRobinPolicy())
     		  .build();
-      poolingOptions
-      .setConnectionsPerHost(HostDistance.LOCAL,  4, 10)
-      .setConnectionsPerHost(HostDistance.REMOTE, 2, 4);
+      
+      
       
       final Metadata metadata = cluster.getMetadata();
       out.printf("Connected to cluster: %s\n", metadata.getClusterName());
@@ -45,6 +54,7 @@ public class CassandraConnector
             host.getDatacenter(), host.getAddress(), host.getRack());
       }
       session = cluster.connect(keyspace);
+     
    }
    /**
     * Provide my Session.
