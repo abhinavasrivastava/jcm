@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
+import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.utils.UUIDs;
 import com.jiocloud.messages.model.Message;
@@ -25,7 +26,7 @@ public class MessageDaoImpl {
 	Session session;
 	PreparedStatement prepared;
 	BoundStatement boundStatement;
-
+	
 	@PostConstruct
 	public void initialize(){
 	    session = cassandraConnectionFactory.getSession();
@@ -39,6 +40,7 @@ public class MessageDaoImpl {
 				+ "values(?,?,?,?,?,?,?)";
 		prepared = session.prepare(sql);
 		boundStatement = new BoundStatement(prepared);
+		
 	}
 
 
@@ -102,8 +104,26 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		//ResultSetFuture f = session.executeAsync(batchStmt);
-		session.execute(batchStmt);
+		ResultSetFuture f = session.executeAsync(batchStmt);
+		
+		//session.execute(batchStmt);
+	}
+	
+	
+	public void saveAsyncMessages2R(MessageUploadRequest messageUploadRequest){
+		BatchStatement batchStmt = new BatchStatement();
+		for(Message message:messageUploadRequest.getMessages()){
+			session.executeAsync(boundStatement.bind(/*messageUploadRequest.getJioId(),*/
+					"123",
+					UUIDs.random(),
+					message.getAddress(),
+					message.getBody(),
+					message.getDate(),
+					message.get_id(),
+					message.getType()
+					));
+		}
+		//session.execute(batchStmt);
 	}
 
 }

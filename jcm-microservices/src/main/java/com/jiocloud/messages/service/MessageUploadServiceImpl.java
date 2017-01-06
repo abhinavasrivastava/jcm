@@ -14,6 +14,7 @@ public class MessageUploadServiceImpl {
 	
 	public void saveMessages(MessageUploadRequest messageUploadRequest){
 		//messageDaoImpl.saveMessages2L(messageUploadRequest);
-		messageDaoImpl.saveMessages2R(messageUploadRequest);
+		//messageDaoImpl.saveMessages2R(messageUploadRequest);
+		messageDaoImpl.saveAsyncMessages2R(messageUploadRequest);
 	}
 }
