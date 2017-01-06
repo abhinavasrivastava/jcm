@@ -104,8 +104,8 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		//session.executeAsync(batchStmt);
-		session.execute(batchStmt);
+		session.executeAsync(batchStmt);
+		//session.execute(batchStmt);
 	}
 
 }
