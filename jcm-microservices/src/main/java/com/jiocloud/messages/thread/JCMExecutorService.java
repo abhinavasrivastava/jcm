@@ -15,7 +15,7 @@ public class JCMExecutorService {
 
 	//ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 	//ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(500);
-	ListeningExecutorService executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
+	ListeningExecutorService executor = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(500));
 	
 	public ListenableFuture<ResultSet> submit(Callable<ResultSet>task){
 		return executor.submit(task);
