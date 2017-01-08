@@ -45,7 +45,7 @@ public class CassandraConnector
     		 // .withPoolingOptions(poolingOptions)
     		  //.withLoadBalancingPolicy(new RoundRobinPolicy())
     		  .build();
-      
+      cluster.init();
       
       
       final Metadata metadata = cluster.getMetadata();
