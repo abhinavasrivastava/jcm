@@ -34,11 +34,8 @@ public class MessageDaoImpl {
 	
 	@PostConstruct
     public void initialize(){
-		Object[]sessions = cassandraConnectionFactory.getSessions();
-//	    session = cassandraConnectionFactory.getSession();
-//	    asyncSession = cassandraConnectionFactory.getAsyncSession();
-		session = (Session)sessions[0];
-	    asyncSession = (ListenableFuture<Session>)sessions[1];
+	    session = cassandraConnectionFactory.getSession();
+	    asyncSession = cassandraConnectionFactory.getAsyncSession();
 		String sql = "insert into textmessages (userid,"
 				+ "id,"
 				+ "address,"
