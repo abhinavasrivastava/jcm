@@ -37,7 +37,7 @@ public class CassandraConnector
 
 	   PoolingOptions poolingOptions = new PoolingOptions();
 	   poolingOptions
-	     .setConnectionsPerHost(HostDistance.LOCAL,  5, 5)
+	     .setConnectionsPerHost(HostDistance.LOCAL,  4, 4)
 	     .setConnectionsPerHost(HostDistance.REMOTE, 2, 2)
 	   //.setCoreConnectionsPerHost(HostDistance.LOCAL,  2)
 	   //.setCoreConnectionsPerHost(HostDistance.REMOTE,  1)
