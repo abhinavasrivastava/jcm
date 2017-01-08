@@ -96,10 +96,11 @@ public class MessageDaoImpl {
 
 	public void saveMessages2R(MessageUploadRequest messageUploadRequest){
 		BatchStatement batchStmt = new BatchStatement();
+		int i=0;
 		for(Message message:messageUploadRequest.getMessages()){
 			System.out.println("adding message into batch");
 			batchStmt.add(boundStatement.bind(/*messageUploadRequest.getJioId(),*/
-					"123",
+					"123" + ++i,
 					UUIDs.random(),
 					message.getAddress(),
 					message.getBody(),
