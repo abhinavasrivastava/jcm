@@ -97,6 +97,7 @@ public class MessageDaoImpl {
 	public void saveMessages2R(MessageUploadRequest messageUploadRequest){
 		BatchStatement batchStmt = new BatchStatement();
 		for(Message message:messageUploadRequest.getMessages()){
+			System.out.println("adding message into batch");
 			batchStmt.add(boundStatement.bind(/*messageUploadRequest.getJioId(),*/
 					"123",
 					UUIDs.random(),
@@ -107,7 +108,7 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		
+		System.out.println("batch size is - " + batchStmt.size());
 		session.execute(batchStmt);
 	}
 	
