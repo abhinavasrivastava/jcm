@@ -63,32 +63,27 @@ public class CassandraConnector
       
       
       
-      final LoadBalancingPolicy loadBalancingPolicy =
-    		    cluster.getConfiguration().getPolicies().getLoadBalancingPolicy();
-    		final PoolingOptions po =
-    		cluster.getConfiguration().getPoolingOptions();
+//      final LoadBalancingPolicy loadBalancingPolicy =
+//    		    cluster.getConfiguration().getPolicies().getLoadBalancingPolicy();
+//    		final PoolingOptions po =
+//    		cluster.getConfiguration().getPoolingOptions();
 
-    		ScheduledExecutorService scheduled =
-    		Executors.newScheduledThreadPool(1);
-    		scheduled.scheduleAtFixedRate(new Runnable() {
-    		    @Override
-    		    public void run() {
-    		        Session.State state = session.getState();
-    		        for (Host host : state.getConnectedHosts()) {
-    		            HostDistance distance = loadBalancingPolicy.distance(host);
-    		            int connections = state.getOpenConnections(host);
-    		            int inFlightQueries = state.getInFlightQueries(host);
-//    		            System.out.printf("%s connections=%d, current load=%d, max
-//    		load=%d%n",
-//    		                host, connections, inFlightQueries,
-//    		                connections *
-//    		poolingOptions.getMaxRequestsPerConnection(distance));
-    		            
-    		           System.out.println(host + "- connections=" + connections + ", current load=" + inFlightQueries + ", max load=" + connections *
-    		po.getMaxRequestsPerConnection(distance));
-    		        }
-    		    }
-    		}, 5, 5, TimeUnit.SECONDS);
+//    		ScheduledExecutorService scheduled =
+//    		Executors.newScheduledThreadPool(1);
+//    		scheduled.scheduleAtFixedRate(new Runnable() {
+//    		    @Override
+//    		    public void run() {
+//    		        Session.State state = session.getState();
+//    		        for (Host host : state.getConnectedHosts()) {
+//    		            HostDistance distance = loadBalancingPolicy.distance(host);
+//    		            int connections = state.getOpenConnections(host);
+//    		            int inFlightQueries = state.getInFlightQueries(host);
+//    		            
+//    		           System.out.println(host + "- connections=" + connections + ", current load=" + inFlightQueries + ", max load=" + connections *
+//    		po.getMaxRequestsPerConnection(distance));
+//    		        }
+//    		    }
+//    		}, 5, 5, TimeUnit.SECONDS);
      
    }
    /**
