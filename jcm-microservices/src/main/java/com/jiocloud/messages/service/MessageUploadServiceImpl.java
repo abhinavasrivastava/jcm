@@ -1,7 +1,5 @@
 package com.jiocloud.messages.service;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +13,7 @@ public class MessageUploadServiceImpl {
 	MessageDaoImpl messageDaoImpl;
 	
 	public void saveMessages(MessageUploadRequest messageUploadRequest){
-		//messageDaoImpl.saveMessages2L(messageUploadRequest);
-		Date start = new Date();
-		messageDaoImpl.saveMessages2R(messageUploadRequest);
-		Date end = new Date();
-		System.out.println("Sync query time - " + (end.getTime() - start.getTime()));
-		
-		start = new Date();
+//		messageDaoImpl.saveMessages2R(messageUploadRequest);
 		messageDaoImpl.saveAsyncMessages2R(messageUploadRequest);
-		end = new Date();
-		System.out.println("Async query time - " + (end.getTime() - start.getTime()));
 	}
 }
