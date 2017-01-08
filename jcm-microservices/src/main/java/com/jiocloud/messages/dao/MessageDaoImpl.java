@@ -98,7 +98,7 @@ public class MessageDaoImpl {
 		//				}
 	}
 
-	public void saveMessages2R(MessageUploadRequest messageUploadRequest){
+	public ResultSet saveMessages2R(MessageUploadRequest messageUploadRequest){
 		BatchStatement batchStmt = new BatchStatement();
 		for(Message message:messageUploadRequest.getMessages()){
 			batchStmt.add(prepared.bind(/*messageUploadRequest.getJioId(),*/
@@ -111,7 +111,7 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		session.execute(batchStmt);
+		return session.execute(batchStmt);
 	}
 	
 	
@@ -147,6 +147,22 @@ public class MessageDaoImpl {
 		    }
 		});
 		//return;
+	}
+	
+	public ListenableFuture<ResultSet> saveAsyncMessages2R2(MessageUploadRequest messageUploadRequest){
+		BatchStatement batchStmt = new BatchStatement();
+		for(Message message:messageUploadRequest.getMessages()){
+			batchStmt.add(prepared.bind(/*messageUploadRequest.getJioId(),*/
+					"123",
+					UUIDs.random(),
+					message.getAddress(),
+					message.getBody(),
+					message.getDate(),
+					message.get_id(),
+					message.getType()
+					));
+		}
+	    return  session.executeAsync(batchStmt);
 	}
 
 }

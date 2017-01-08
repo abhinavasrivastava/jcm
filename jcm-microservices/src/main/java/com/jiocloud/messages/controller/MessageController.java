@@ -1,7 +1,5 @@
 package com.jiocloud.messages.controller;
 
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -24,6 +22,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import com.datastax.driver.core.ResultSet;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.gson.Gson;
 import com.jiocloud.messages.dao.MessageDaoImpl;
 import com.jiocloud.messages.model.MessageUploadRequest;
@@ -103,7 +105,7 @@ public class MessageController {
 		byte[] bytes = org.apache.commons.io.IOUtils.toByteArray( request.getInputStream());
           //String message = gson.toJson(req);
 //        channel.basicPublish("textmessagesexchange", "textmessagekey", MessageProperties.MINIMAL_PERSISTENT_BASIC, message.getBytes());
-          jCMExecutorService.submit(new PublishTask(rabbitMqConnectionFactory, bytes));
+          //jCMExecutorService.submit(new PublishTask(rabbitMqConnectionFactory, bytes));
 		return "message queued.";
 	}
 	
@@ -113,7 +115,21 @@ public class MessageController {
 		//messageUploadServiceImpl.saveMessages(req);
 		Date end = new Date();
 		//System.out.println("query time - " + (end.getTime() - start.getTime()));
-		jCMExecutorService.submit(new SaveMessageTask(messageDaoImpl, req));
+		ListenableFuture future = jCMExecutorService.submit(new SaveMessageTask(messageDaoImpl, req));
+		
+		Futures.addCallback(future, new FutureCallback<ResultSet>() {
+		    @Override
+		    public void onSuccess(ResultSet contents) {
+		        //...process web site contents
+		    }
+
+		    @Override
+		    public void onFailure(Throwable throwable) {
+		        
+		    }
+		});
+
+		
 		return "message queued";
 	}
 	

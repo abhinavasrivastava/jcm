@@ -2,10 +2,11 @@ package com.jiocloud.messages.thread;
 
 import java.util.concurrent.Callable;
 
+import com.datastax.driver.core.ResultSet;
 import com.jiocloud.messages.dao.MessageDaoImpl;
 import com.jiocloud.messages.model.MessageUploadRequest;
 
-public class SaveMessageTask implements Callable<String>{
+public class SaveMessageTask implements Callable<ResultSet>{
 
 	MessageDaoImpl messageDaoImpl;
 	MessageUploadRequest messageUploadRequest;
@@ -17,10 +18,10 @@ public class SaveMessageTask implements Callable<String>{
 	}
 	
 	@Override
-	public String call() throws Exception {
-		messageDaoImpl.saveAsyncMessages2R(messageUploadRequest);
+	public ResultSet call() throws Exception {
+		return  messageDaoImpl.saveMessages2R(messageUploadRequest);
 		
-		return "see u.";
+		//return "see u.";
 	}
 
 }
