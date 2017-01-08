@@ -13,7 +13,7 @@ public class MessageUploadServiceImpl {
 	MessageDaoImpl messageDaoImpl;
 	
 	public void saveMessages(MessageUploadRequest messageUploadRequest){
-//		messageDaoImpl.saveMessages2R(messageUploadRequest);
-		messageDaoImpl.saveAsyncMessages2R(messageUploadRequest);
+		messageDaoImpl.saveMessages2R(messageUploadRequest);
+		//messageDaoImpl.saveAsyncMessages2R(messageUploadRequest);
 	}
 }

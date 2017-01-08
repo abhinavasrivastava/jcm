@@ -112,7 +112,7 @@ public class MessageController {
 		Date start = new Date();
 		messageUploadServiceImpl.saveMessages(req);
 		Date end = new Date();
-		System.out.println("query time - " + (end.getTime() - start.getTime()));
+		//System.out.println("query time - " + (end.getTime() - start.getTime()));
 		//jCMExecutorService.submit(new SaveMessageTask(messageDaoImpl, req));
 		return "message queued";
 	}
