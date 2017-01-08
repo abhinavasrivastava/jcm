@@ -108,10 +108,7 @@ public class MessageDaoImpl {
 					));
 		}
 		
-		Date start = new Date();
 		session.execute(batchStmt);
-		Date end = new Date();
-		System.out.println("Sync query time - " + (end.getTime() - start.getTime()));
 	}
 	
 	
@@ -128,10 +125,7 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		Date start = new Date();
 		ResultSetFuture f = session.executeAsync(batchStmt);
-		Date end = new Date();
-		System.out.println("Async query time - " + (end.getTime() - start.getTime()));
 		//return;
 	}
 
