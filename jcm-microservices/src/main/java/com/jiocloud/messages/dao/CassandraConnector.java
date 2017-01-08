@@ -37,16 +37,16 @@ public class CassandraConnector
 
 	   PoolingOptions poolingOptions = new PoolingOptions();
 	   poolingOptions
-	     .setConnectionsPerHost(HostDistance.LOCAL,  1, 1)
-	      //.setConnectionsPerHost(HostDistance.REMOTE, 2, 4);
+	     .setConnectionsPerHost(HostDistance.LOCAL,  4, 4)
+	     .setConnectionsPerHost(HostDistance.REMOTE, 2, 2)
 	   //.setCoreConnectionsPerHost(HostDistance.LOCAL,  2)
 	   //.setCoreConnectionsPerHost(HostDistance.REMOTE,  1)
-	      .setMaxRequestsPerConnection(HostDistance.LOCAL, 32768)
-	      .setMaxRequestsPerConnection(HostDistance.REMOTE, 2000);
+	      .setMaxRequestsPerConnection(HostDistance.LOCAL, 100)
+	      .setMaxRequestsPerConnection(HostDistance.REMOTE, 25);
       this.cluster = Cluster.builder().addContactPoints(node.split(","))
     		  .withPort(port)
-    		  .withProtocolVersion(ProtocolVersion.V2)
-    		  //.withPoolingOptions(poolingOptions)
+    		  .withProtocolVersion(ProtocolVersion.V4)
+    		  .withPoolingOptions(poolingOptions)
     		  //.withLoadBalancingPolicy(new RoundRobinPolicy())
     		  .build();
       cluster.init();
