@@ -2,10 +2,6 @@ package com.jiocloud.messages.dao;
 
 import static java.lang.System.out;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Host;
 import com.datastax.driver.core.HostDistance;
@@ -13,7 +9,7 @@ import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.PoolingOptions;
 import com.datastax.driver.core.ProtocolVersion;
 import com.datastax.driver.core.Session;
-import com.datastax.driver.core.policies.LoadBalancingPolicy;
+import com.google.common.util.concurrent.ListenableFuture;
 /**
  * Class used for connecting to Cassandra database.
  */
@@ -23,6 +19,8 @@ public class CassandraConnector
    private Cluster cluster;
    /** Cassandra Session. */
    private Session session;
+   
+   ListenableFuture<Session> asyncSession;
    /**
     * Connect to Cassandra Cluster specified by provided node IP
     * address and port number.
@@ -86,6 +84,27 @@ public class CassandraConnector
 //    		}, 5, 5, TimeUnit.SECONDS);
      
    }
+   
+   public void connectAsync(final String node, final int port, final String keyspace)
+   {
+      this.cluster = Cluster.builder().addContactPoints(node.split(","))
+    		  .withPort(port)
+    		  .withProtocolVersion(ProtocolVersion.V4)
+    		  .build();
+      cluster.init();
+      
+      
+      final Metadata metadata = cluster.getMetadata();
+      out.printf("Connected to cluster: %s\n", metadata.getClusterName());
+      for (final Host host : metadata.getAllHosts())
+      {
+         out.printf("Datacenter: %s; Host: %s; Rack: %s\n",
+            host.getDatacenter(), host.getAddress(), host.getRack());
+      }
+      asyncSession = cluster.connectAsync(keyspace);
+   }
+   
+   
    /**
     * Provide my Session.
     *
@@ -94,6 +113,10 @@ public class CassandraConnector
    public Session getSession()
    {
       return this.session;
+   }
+   public ListenableFuture<Session> getAsyncSession()
+   {
+      return this.asyncSession;
    }
    /** Close cluster. */
    public void close()

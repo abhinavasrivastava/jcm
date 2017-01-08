@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.datastax.driver.core.BatchStatement;
-import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
-import com.datastax.driver.core.ResultSetFuture;
+import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.utils.UUIDs;
+import com.google.common.util.concurrent.AsyncFunction;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.jiocloud.messages.model.Message;
 import com.jiocloud.messages.model.MessageUploadRequest;
@@ -25,6 +27,7 @@ public class MessageDaoImpl {
 	CassandraConnectionFactory cassandraConnectionFactory;
 	String sql;
 	Session session;
+	ListenableFuture<Session> asyncSession;
 	PreparedStatement prepared;
 	//BoundStatement boundStatement;
 	ListenableFuture<PreparedStatement> preparedAsync;
@@ -32,6 +35,7 @@ public class MessageDaoImpl {
 	@PostConstruct
     public void initialize(){
 	    session = cassandraConnectionFactory.getSession();
+	    asyncSession = cassandraConnectionFactory.getAsyncSession();
 		String sql = "insert into textmessages (userid,"
 				+ "id,"
 				+ "address,"
@@ -124,7 +128,24 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
-		ResultSetFuture f = session.executeAsync(batchStmt);
+	//	ResultSetFuture f = session.executeAsync(batchStmt);
+		ListenableFuture<ResultSet> resultSet = Futures.transform(asyncSession,
+			    new AsyncFunction<Session, ResultSet>() {
+			        public ListenableFuture<ResultSet> apply(Session session) throws Exception {
+			            return session.executeAsync(batchStmt);
+			        }
+			    });
+		
+		Futures.addCallback(resultSet, new FutureCallback<ResultSet>() {
+		    public void onSuccess(ResultSet resultSet) {
+
+		    }
+
+		    public void onFailure(Throwable t) {
+		        System.out.printf("Failed to retrieve the version: %s%n",
+		            t.getMessage());
+		    }
+		});
 		//return;
 	}
 
