@@ -42,7 +42,7 @@ public class CassandraConnector
       this.cluster = Cluster.builder().addContactPoints(node.split(","))
     		  .withPort(port)
     		  .withProtocolVersion(ProtocolVersion.V4)
-    		 //.withPoolingOptions(poolingOptions)
+    		 .withPoolingOptions(poolingOptions)
     		  //.withLoadBalancingPolicy(new RoundRobinPolicy())
     		  .build();
       cluster.init();
