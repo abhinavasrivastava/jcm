@@ -23,6 +23,7 @@ public class CassandraConnectionFactory {
 		cassandraConnector = new CassandraConnector();
 		cassandraConnector.connect(rb.getString("cassandra.node"), 9042, rb.getString("cassandra.keyspace"));
 		session = cassandraConnector.getSession();
+		cassandraConnector.connectAsync(rb.getString("cassandra.node"), 9042, rb.getString("cassandra.keyspace"));
 		asyncSession = cassandraConnector.getAsyncSession();
 	}
 	
