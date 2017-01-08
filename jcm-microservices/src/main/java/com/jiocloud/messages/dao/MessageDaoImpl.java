@@ -13,6 +13,7 @@ import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.utils.UUIDs;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.jiocloud.messages.model.Message;
 import com.jiocloud.messages.model.MessageUploadRequest;
 
@@ -26,6 +27,7 @@ public class MessageDaoImpl {
 	Session session;
 	PreparedStatement prepared;
 	BoundStatement boundStatement;
+	ListenableFuture<PreparedStatement> preparedAsync;
 	
 	@PostConstruct
     public void initialize(){
@@ -39,6 +41,7 @@ public class MessageDaoImpl {
 				+ "msgtype) "
 				+ "values(?,?,?,?,?,?,?)";
 		prepared = session.prepare(sql);
+		preparedAsync = session.prepareAsync(sql);
 		boundStatement = new BoundStatement(prepared);
 		
 	}
@@ -105,7 +108,10 @@ public class MessageDaoImpl {
 					));
 		}
 		
+		Date start = new Date();
 		session.execute(batchStmt);
+		Date end = new Date();
+		System.out.println("Sync query time - " + (end.getTime() - start.getTime()));
 	}
 	
 	
@@ -122,7 +128,10 @@ public class MessageDaoImpl {
 					message.getType()
 					));
 		}
+		Date start = new Date();
 		ResultSetFuture f = session.executeAsync(batchStmt);
+		Date end = new Date();
+		System.out.println("Async query time - " + (end.getTime() - start.getTime()));
 		//return;
 	}
 
