@@ -24,6 +24,6 @@ public class MessageUploadServiceImpl {
 		start = new Date();
 		messageDaoImpl.saveAsyncMessages2R(messageUploadRequest);
 		end = new Date();
-		System.out.println("Sync query time - " + (end.getTime() - start.getTime()));
+		System.out.println("Async query time - " + (end.getTime() - start.getTime()));
 	}
 }
