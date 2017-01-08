@@ -18,7 +18,7 @@ public class SaveMessageTask implements Callable<String>{
 	
 	@Override
 	public String call() throws Exception {
-		messageDaoImpl.saveMessages2R(messageUploadRequest);
+		messageDaoImpl.saveAsyncMessages2R(messageUploadRequest);
 		
 		return "see u.";
 	}

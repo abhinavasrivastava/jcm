@@ -110,10 +110,10 @@ public class MessageController {
 	@RequestMapping(value="/upload2c", method = RequestMethod.POST)
 	public String uploadMesaages2c(@RequestBody MessageUploadRequest req) throws Exception{
 		Date start = new Date();
-		messageUploadServiceImpl.saveMessages(req);
+		//messageUploadServiceImpl.saveMessages(req);
 		Date end = new Date();
 		//System.out.println("query time - " + (end.getTime() - start.getTime()));
-		//jCMExecutorService.submit(new SaveMessageTask(messageDaoImpl, req));
+		jCMExecutorService.submit(new SaveMessageTask(messageDaoImpl, req));
 		return "message queued";
 	}
 	
