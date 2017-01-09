@@ -110,10 +110,10 @@ public class MessageController {
 	
 	
 	@RequestMapping(value="/syncupload2c", method = RequestMethod.POST)
-	public String syncupload2c(@RequestBody MessageUploadRequest req) throws Exception{
-		messageUploadServiceImpl.saveMessages(req);
+	public ResultSet syncupload2c(@RequestBody MessageUploadRequest req) throws Exception{
+		return messageUploadServiceImpl.saveMessages(req);
 	
-		return "message queued";
+		//return "message queued";
 	}
 	
 	@RequestMapping(value="/asyncupload2c", method = RequestMethod.POST)
