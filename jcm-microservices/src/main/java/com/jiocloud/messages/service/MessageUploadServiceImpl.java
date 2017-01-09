@@ -12,11 +12,11 @@ public class MessageUploadServiceImpl {
 	@Autowired
 	MessageDaoImpl messageDaoImpl;
 	
-	public void saveAsyncMessages(MessageUploadRequest messageUploadRequest){
+	public void saveMessages(MessageUploadRequest messageUploadRequest){
 		messageDaoImpl.saveMessages2R(messageUploadRequest);
 	}
 	
-	public void saveMessages(MessageUploadRequest messageUploadRequest){
+	public void saveAsyncMessages(MessageUploadRequest messageUploadRequest){
 		messageDaoImpl.saveAsyncMessages2R(messageUploadRequest);
 	}
 }

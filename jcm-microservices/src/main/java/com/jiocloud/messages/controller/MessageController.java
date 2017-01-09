@@ -1,6 +1,5 @@
 package com.jiocloud.messages.controller;
 
-import java.util.Date;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -31,8 +30,8 @@ import com.jiocloud.messages.dao.MessageDaoImpl;
 import com.jiocloud.messages.model.MessageUploadRequest;
 import com.jiocloud.messages.rabbit.RabbitMqConnectionFactory;
 import com.jiocloud.messages.service.MessageUploadServiceImpl;
+import com.jiocloud.messages.thread.AsyncSaveMessageTask;
 import com.jiocloud.messages.thread.JCMExecutorService;
-import com.jiocloud.messages.thread.PublishTask;
 import com.jiocloud.messages.thread.SaveMessageTask;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
@@ -119,6 +118,13 @@ public class MessageController {
 	
 	@RequestMapping(value="/asyncupload2c", method = RequestMethod.POST)
 	public String asyncupload2c(@RequestBody MessageUploadRequest req) throws Exception{
+		messageUploadServiceImpl.saveAsyncMessages(req);
+	
+		return "message queued";
+	}
+	
+	@RequestMapping(value="/asyncsyncupload2c", method = RequestMethod.POST)
+	public String asyncsyncupload2c(@RequestBody MessageUploadRequest req) throws Exception{
 		ListenableFuture future = jCMExecutorService.submit(new SaveMessageTask(messageDaoImpl, req));
 		
 		Futures.addCallback(future, new FutureCallback<ResultSet>() {
@@ -136,6 +142,23 @@ public class MessageController {
 		return "message queued";
 	}
 	
+	@RequestMapping(value="/asyncasyncupload2c", method = RequestMethod.POST)
+	public String asyncasyncupload2c(@RequestBody MessageUploadRequest req) throws Exception{
+		ListenableFuture future = jCMExecutorService.submit(new AsyncSaveMessageTask(messageDaoImpl, req));
+		
+		Futures.addCallback(future, new FutureCallback<ResultSet>() {
+		    @Override
+		    public void onSuccess(ResultSet contents) {
+		        //...process resultset
+		    }
+
+		    @Override
+		    public void onFailure(Throwable throwable) {
+		        
+		    }
+		});
 	
+		return "message queued";
+	}
 
 }
