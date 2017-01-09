@@ -109,18 +109,22 @@ public class MessageController {
 		return "message queued.";
 	}
 	
-	@RequestMapping(value="/upload2c", method = RequestMethod.POST)
-	public String uploadMesaages2c(@RequestBody MessageUploadRequest req) throws Exception{
-		Date start = new Date();
-		//messageUploadServiceImpl.saveMessages(req);
-		Date end = new Date();
-		//System.out.println("query time - " + (end.getTime() - start.getTime()));
+	
+	@RequestMapping(value="/syncupload2c", method = RequestMethod.POST)
+	public String syncupload2c(@RequestBody MessageUploadRequest req) throws Exception{
+		messageUploadServiceImpl.saveMessages(req);
+	
+		return "message queued";
+	}
+	
+	@RequestMapping(value="/asyncupload2c", method = RequestMethod.POST)
+	public String asyncupload2c(@RequestBody MessageUploadRequest req) throws Exception{
 		ListenableFuture future = jCMExecutorService.submit(new SaveMessageTask(messageDaoImpl, req));
 		
 		Futures.addCallback(future, new FutureCallback<ResultSet>() {
 		    @Override
 		    public void onSuccess(ResultSet contents) {
-		        //...process web site contents
+		        //...process resultset
 		    }
 
 		    @Override
@@ -128,8 +132,7 @@ public class MessageController {
 		        
 		    }
 		});
-
-		
+	
 		return "message queued";
 	}
 	

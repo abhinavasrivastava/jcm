@@ -115,7 +115,8 @@ public class MessageDaoImpl {
 	}
 	
 	
-	public void saveAsyncMessages2R(MessageUploadRequest messageUploadRequest){
+	public ResultSet saveAsyncMessages2R(MessageUploadRequest messageUploadRequest){
+		ResultSet rs = null;
 		BatchStatement batchStmt = new BatchStatement();
 		for(Message message:messageUploadRequest.getMessages()){
 			batchStmt.add(prepared.bind(/*messageUploadRequest.getJioId(),*/
@@ -129,16 +130,17 @@ public class MessageDaoImpl {
 					));
 		}
 	//	ResultSetFuture f = session.executeAsync(batchStmt);
-		ListenableFuture<ResultSet> resultSet = Futures.transform(asyncSession,
-			    new AsyncFunction<Session, ResultSet>() {
-			        public ListenableFuture<ResultSet> apply(Session session) throws Exception {
-			            return session.executeAsync(batchStmt);
-			        }
-			    });
+//		ListenableFuture<ResultSet> resultSet = Futures.transform(asyncSession,
+//			    new AsyncFunction<Session, ResultSet>() {
+//			        public ListenableFuture<ResultSet> apply(Session session) throws Exception {
+//			            return session.executeAsync(batchStmt);
+//			        }
+//			    });
 		
+		ListenableFuture<ResultSet> resultSet = session.executeAsync(batchStmt);
 		Futures.addCallback(resultSet, new FutureCallback<ResultSet>() {
 		    public void onSuccess(ResultSet resultSet) {
-
+		    	
 		    }
 
 		    public void onFailure(Throwable t) {
@@ -146,23 +148,7 @@ public class MessageDaoImpl {
 		            t.getMessage());
 		    }
 		});
-		//return;
-	}
-	
-	public ListenableFuture<ResultSet> saveAsyncMessages2R2(MessageUploadRequest messageUploadRequest){
-		BatchStatement batchStmt = new BatchStatement();
-		for(Message message:messageUploadRequest.getMessages()){
-			batchStmt.add(prepared.bind(/*messageUploadRequest.getJioId(),*/
-					"123",
-					UUIDs.random(),
-					message.getAddress(),
-					message.getBody(),
-					message.getDate(),
-					message.get_id(),
-					message.getType()
-					));
-		}
-	    return  session.executeAsync(batchStmt);
+		return rs;
 	}
 
 }

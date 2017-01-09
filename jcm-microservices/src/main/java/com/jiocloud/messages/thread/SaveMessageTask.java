@@ -19,8 +19,8 @@ public class SaveMessageTask implements Callable<ResultSet>{
 	
 	@Override
 	public ResultSet call() throws Exception {
-		return  messageDaoImpl.saveMessages2R(messageUploadRequest);
-		
+		//return  messageDaoImpl.saveMessages2R(messageUploadRequest);
+		return  messageDaoImpl.saveAsyncMessages2R(messageUploadRequest);
 		//return "see u.";
 	}
 
